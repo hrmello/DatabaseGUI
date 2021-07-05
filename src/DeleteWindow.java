@@ -1,3 +1,5 @@
+package MatrixOps;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -16,17 +18,15 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class InsertWindow extends JFrame {
+public class DeleteWindow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField orderTextField;
 
 	/**
 	 * Launch the application.
@@ -35,7 +35,7 @@ public class InsertWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InsertWindow frame = new InsertWindow();
+					DeleteWindow frame = new DeleteWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,8 +47,7 @@ public class InsertWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InsertWindow() {
-
+	public DeleteWindow() {
 		try {
 			System.out.println("Conectando à base de dados");
 			Connection conn = DriverManager.getConnection("jdbc:postgresql://200.137.130.25/Henrique_DB",
@@ -57,9 +56,9 @@ public class InsertWindow extends JFrame {
 			System.out.println("Conectado");
 			Statement stm = conn.createStatement();
 			
-			setTitle("Inser\u00E7\u00E3o de registros");
+			setTitle("Sele\u00E7\u00E3o de registros");
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 563, 243);
+			setBounds(100, 100, 563, 528);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
@@ -67,7 +66,7 @@ public class InsertWindow extends JFrame {
 			
 			JLabel lblNewLabel = new JLabel("Tabelas");
 			lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			lblNewLabel.setBounds(133, 24, 51, 29);
+			lblNewLabel.setBounds(65, 24, 51, 29);
 			contentPane.add(lblNewLabel);
 			
 				
@@ -106,35 +105,18 @@ public class InsertWindow extends JFrame {
 			
 			
 			
-			tableList.setBounds(102, 59, 110, 127);
+			tableList.setBounds(33, 59, 110, 101);
 			contentPane.add(tableList);
 			
-					
-			JLabel lblNewLabel_2 = new JLabel("Selecione a tabela, a coluna e a condi\u00E7\u00E3o para que seja feita a inser\u00E7\u00E3o de um novo elemento.");
-			lblNewLabel_2.setBounds(10, 0, 481, 25);
-			contentPane.add(lblNewLabel_2);
 			
-			JLabel lblNewLabel_1_1 = new JLabel("Digite os valores na seguinte ordem");
-			lblNewLabel_1_1.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			lblNewLabel_1_1.setBounds(274, 27, 296, 22);
-			contentPane.add(lblNewLabel_1_1);
+			JLabel lblNewLabel_1 = new JLabel("Colunas");
+			lblNewLabel_1.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+			lblNewLabel_1.setBounds(194, 27, 78, 22);
+			contentPane.add(lblNewLabel_1);
 			
-			JTextField valuesField = new JTextField();
-			valuesField.setBounds(303, 132, 134, 20);
-			contentPane.add(valuesField);
-			valuesField.setColumns(10);
-			
-			JButton insertButton = new JButton("Inserir");
-			insertButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			insertButton.setBounds(303, 163, 134, 23);
-			contentPane.add(insertButton);
-			
-			orderTextField = new JTextField();
-			orderTextField.setEditable(false);
-			contentPane.add(orderTextField);
-			JScrollPane scroll = new JScrollPane(orderTextField);
-			scroll.setBounds(274, 59, 206, 65);
-			getContentPane().add(scroll);
+			List colList = new List();
+			colList.setBounds(167, 59, 110, 101);
+			contentPane.add(colList);
 			
 			// Listener da primeira lista (tableList)
 			tableList.addActionListener(new ActionListener() {
@@ -142,41 +124,61 @@ public class InsertWindow extends JFrame {
 					String table = tableList.getSelectedItem();
 					System.out.println(table);
 					
+					// Limpando a lista de colunas anteriormente em colList
+					colList.removeAll();
 					ArrayList<String>columnsInTable = tableCols.get(table);
-					String label = "";
-					for (int i = 0; i < columnsInTable.size(); i++) {
-						if (i == columnsInTable.size() - 1) {
-							label = label + columnsInTable.get(i);
-						} else {
-							label = label + columnsInTable.get(i) +", " ;
-						}
+					
+					for (String col : columnsInTable) {
+						colList.add(col);
 					}
-					System.out.println(label);
-					orderTextField.setText(label);
-					
-					
 				}
 			});
 			
-			insertButton.addActionListener(new ActionListener() {
+			JLabel lblNewLabel_2 = new JLabel("Selecione a tabela e, opcionalmente, a coluna e a condi\u00E7\u00E3o que deseja visualizar.");
+			lblNewLabel_2.setBounds(10, 0, 481, 25);
+			contentPane.add(lblNewLabel_2);
+			
+			JTextArea textArea = new JTextArea();
+			// área de texto não pode ser editada
+			textArea.setEditable(false);
+			
+			contentPane.add(textArea);
+			JScrollPane scroll = new JScrollPane(textArea);
+			scroll.setBounds(92, 235, 346, 243);                  
+	        getContentPane().add(scroll);
+			
+			JLabel lblNewLabel_3 = new JLabel("Resultado da consulta");
+			lblNewLabel_3.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+			lblNewLabel_3.setBounds(194, 210, 197, 14);
+			contentPane.add(lblNewLabel_3);
+			
+			JLabel lblNewLabel_1_1 = new JLabel("Condi\u00E7\u00E3o para remo\u00E7\u00E3o");
+			lblNewLabel_1_1.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+			lblNewLabel_1_1.setBounds(319, 27, 191, 22);
+			contentPane.add(lblNewLabel_1_1);
+			
+			JTextField conditionField = new JTextField();
+			conditionField.setBounds(342, 59, 134, 20);
+			contentPane.add(conditionField);
+			conditionField.setColumns(10);
+			
+			JButton deleteButton = new JButton("Remover");
+			deleteButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+			deleteButton.setBounds(342, 95, 134, 23);
+			contentPane.add(deleteButton);
+			deleteButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String table = tableList.getSelectedItem();
-					String values = valuesField.getText();
-					ArrayList<String>columns_list = tableCols.get(table);
-					String cols = columns_list.toString();
-					String insertQuery = "INSERT INTO \"Institucional\".\"" + table + "\"("+ cols.substring(1, cols.length() - 1) + ") VALUES (" + values + ")"; 
-					
+					String col = colList.getSelectedItem();
+					String condition = conditionField.getText();
+					String deleteQuery = "DELETE  * FROM \"Institucional\".\"" + table + "\" WHERE "+ col + "="+ condition;
 					
 					try {
-						System.out.println("Inserindo dados");
-						stm.execute(insertQuery);
-						JOptionPane.showMessageDialog(insertButton, "Inserção feita");
-						System.out.println("Inserção feita no banco de dados");
-						
-						
-					}catch (Exception insertException){
-						JOptionPane.showMessageDialog(insertButton, insertException);
-						System.out.print(insertException);
+						System.out.println("Executando a consulta");
+						stm.execute(deleteQuery);	
+			         
+					}catch (Exception selectionException){
+						System.out.print(selectionException);
 					};
 				}
 			});
@@ -184,7 +186,6 @@ public class InsertWindow extends JFrame {
 		} catch (Exception e){
 			System.out.println(e);
 		}
-		
 	}
 
 }

@@ -125,6 +125,9 @@ public class DatabaseGUI {
 		updateButton.setBounds(287, 5, 114, 23);
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				UpdateWindow upWindow = new UpdateWindow();
+				upWindow.setVisible(true);
+				upWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 		frmDatabaseGui.getContentPane().add(updateButton);
@@ -135,7 +138,7 @@ public class DatabaseGUI {
 		
 		String[] items = { "CURSOS", "ESTUDANTES", "DISCIPLINAS", "NOTAS", "TURMAS"};
 		
-		insertButton.addActionListener(new ActionListener() {
+		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});

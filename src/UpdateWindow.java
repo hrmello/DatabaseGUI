@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -25,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 public class UpdateWindow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField condValueTextField;
 
 	/**
 	 * Launch the application.
@@ -67,9 +68,6 @@ public class UpdateWindow extends JFrame {
 			lblNewLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
 			lblNewLabel.setBounds(65, 24, 51, 29);
 			contentPane.add(lblNewLabel);
-			
-				
-				
 			
 			// colocando os nomes das tabelas na lista que será exibida no jframe
 			ArrayList<String> tableListForCols = new ArrayList<String>();
@@ -117,6 +115,10 @@ public class UpdateWindow extends JFrame {
 			colList.setBounds(167, 59, 110, 101);
 			contentPane.add(colList);
 			
+			List condColList = new List();
+			condColList.setBounds(294, 59, 110, 101);
+			contentPane.add(condColList);
+			
 			// Listener da primeira lista (tableList)
 			tableList.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -129,6 +131,7 @@ public class UpdateWindow extends JFrame {
 					
 					for (String col : columnsInTable) {
 						colList.add(col);
+						condColList.add(col);
 					}
 				}
 			});
@@ -142,52 +145,45 @@ public class UpdateWindow extends JFrame {
 			lblNewLabel_1_1.setBounds(33, 182, 191, 22);
 			contentPane.add(lblNewLabel_1_1);
 			
-			JTextField conditionField = new JTextField();
-			conditionField.setBounds(22, 205, 134, 20);
-			contentPane.add(conditionField);
-			conditionField.setColumns(10);
+			JTextField updateValueTextField = new JTextField();
+			updateValueTextField.setBounds(22, 205, 134, 20);
+			contentPane.add(updateValueTextField);
+			updateValueTextField.setColumns(10);
 			
-			JButton selectButton = new JButton("Atualizar");
-			selectButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			selectButton.setBounds(191, 203, 134, 23);
-			contentPane.add(selectButton);
+			JButton updateButton = new JButton("Atualizar");
+			updateButton.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
+			updateButton.setBounds(191, 203, 134, 23);
+			contentPane.add(updateButton);
 			
 			JLabel lblNewLabel_1_2 = new JLabel("Coluna da condi\u00E7\u00E3o");
 			lblNewLabel_1_2.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
 			lblNewLabel_1_2.setBounds(294, 27, 119, 22);
 			contentPane.add(lblNewLabel_1_2);
+					
 			
-			List colList_1 = new List();
-			colList_1.setBounds(294, 59, 110, 101);
-			contentPane.add(colList_1);
-			
-			textField = new JTextField();
-			textField.setColumns(10);
-			textField.setBounds(428, 115, 104, 20);
-			contentPane.add(textField);
+			condValueTextField = new JTextField();
+			condValueTextField.setColumns(10);
+			condValueTextField.setBounds(428, 115, 104, 20);
+			contentPane.add(condValueTextField);
 			
 			JLabel lblNewLabel_1_2_1 = new JLabel("Valor da condi\u00E7\u00E3o");
 			lblNewLabel_1_2_1.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
 			lblNewLabel_1_2_1.setBounds(428, 84, 119, 22);
 			contentPane.add(lblNewLabel_1_2_1);
-			selectButton.addActionListener(new ActionListener() {
+			
+			updateButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String table = tableList.getSelectedItem();
 					String col = colList.getSelectedItem();
-					String update = conditionField.getText();
-					String selectQuery = "SELECT * FROM \"Institucional\".\"" + table + "\" WHERE "+ col + "="+ condition;
+					String updateValue = updateValueTextField.getText();
+					String conditionValue = condValueTextField.getText();
+					String updateQuery = "UPDATE \"Institucional\".\""+ table + "\" SET "+ col + "=" + updateValue +
+							" WHERE " + condColList.getSelectedItem() + "=" + conditionValue;
 					
 					try {
-						System.out.println("Executando a consulta");
-						ResultSet result_select = stm.executeQuery(selectQuery);
-						ResultSetMetaData rsmd = result_select.getMetaData();
-						
-						// número de colunas 
-						int columnCount = rsmd.getColumnCount();
-						
-						String updateQuery = "UPDATE \"Institucional\".\""+ table + "\" SET "+ col + "=" + updateValue +" WHERE " + condition;
-						
+						System.out.println("Executando a atualização");
 						stm.execute(updateQuery);
+						JOptionPane.showMessageDialog(updateButton, "Atualização feita");
 						System.out.println("Atualização feita no banco de dados");
 					
 					}catch (Exception selectionException){
