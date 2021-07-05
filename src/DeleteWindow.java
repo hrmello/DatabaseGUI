@@ -1,5 +1,3 @@
-package MatrixOps;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,6 +16,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -56,9 +55,9 @@ public class DeleteWindow extends JFrame {
 			System.out.println("Conectado");
 			Statement stm = conn.createStatement();
 			
-			setTitle("Sele\u00E7\u00E3o de registros");
+			setTitle("Remo\u00E7\u00E3o de registros");
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 563, 528);
+			setBounds(100, 100, 563, 202);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
@@ -134,27 +133,13 @@ public class DeleteWindow extends JFrame {
 				}
 			});
 			
-			JLabel lblNewLabel_2 = new JLabel("Selecione a tabela e, opcionalmente, a coluna e a condi\u00E7\u00E3o que deseja visualizar.");
+			JLabel lblNewLabel_2 = new JLabel("Selecione a tabela, coluna e a condi\u00E7\u00E3o para que os registros sejam removidos.");
 			lblNewLabel_2.setBounds(10, 0, 481, 25);
 			contentPane.add(lblNewLabel_2);
 			
-			JTextArea textArea = new JTextArea();
-			// área de texto não pode ser editada
-			textArea.setEditable(false);
-			
-			contentPane.add(textArea);
-			JScrollPane scroll = new JScrollPane(textArea);
-			scroll.setBounds(92, 235, 346, 243);                  
-	        getContentPane().add(scroll);
-			
-			JLabel lblNewLabel_3 = new JLabel("Resultado da consulta");
-			lblNewLabel_3.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			lblNewLabel_3.setBounds(194, 210, 197, 14);
-			contentPane.add(lblNewLabel_3);
-			
 			JLabel lblNewLabel_1_1 = new JLabel("Condi\u00E7\u00E3o para remo\u00E7\u00E3o");
 			lblNewLabel_1_1.setFont(new Font("Trebuchet MS", Font.BOLD, 12));
-			lblNewLabel_1_1.setBounds(319, 27, 191, 22);
+			lblNewLabel_1_1.setBounds(346, 27, 191, 22);
 			contentPane.add(lblNewLabel_1_1);
 			
 			JTextField conditionField = new JTextField();
@@ -171,14 +156,16 @@ public class DeleteWindow extends JFrame {
 					String table = tableList.getSelectedItem();
 					String col = colList.getSelectedItem();
 					String condition = conditionField.getText();
-					String deleteQuery = "DELETE  * FROM \"Institucional\".\"" + table + "\" WHERE "+ col + "="+ condition;
+					String deleteQuery = "DELETE FROM \"Institucional\".\"" + table + "\" WHERE "+ col + "="+ condition;
 					
 					try {
-						System.out.println("Executando a consulta");
+						System.out.println("Executando a remoção");
 						stm.execute(deleteQuery);	
-			         
-					}catch (Exception selectionException){
-						System.out.print(selectionException);
+						JOptionPane.showMessageDialog(deleteButton, "Remoção feita");
+						
+					}catch (Exception deleteException){
+						JOptionPane.showMessageDialog(deleteButton, deleteException);
+						System.out.print(deleteException);
 					};
 				}
 			});

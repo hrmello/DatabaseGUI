@@ -123,6 +123,8 @@ public class DatabaseGUI {
 		
 		JButton updateButton = new JButton("Atualizar");
 		updateButton.setBounds(287, 5, 114, 23);
+		frmDatabaseGui.getContentPane().add(updateButton);
+		
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UpdateWindow upWindow = new UpdateWindow();
@@ -130,7 +132,6 @@ public class DatabaseGUI {
 				upWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
-		frmDatabaseGui.getContentPane().add(updateButton);
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.setBounds(411, 5, 129, 23);
@@ -140,6 +141,9 @@ public class DatabaseGUI {
 		
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DeleteWindow dltWindow = new DeleteWindow();
+				dltWindow.setVisible(true);
+				dltWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}
 		});
 	}

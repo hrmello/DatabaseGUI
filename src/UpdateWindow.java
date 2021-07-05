@@ -186,8 +186,9 @@ public class UpdateWindow extends JFrame {
 						JOptionPane.showMessageDialog(updateButton, "Atualização feita");
 						System.out.println("Atualização feita no banco de dados");
 					
-					}catch (Exception selectionException){
-						System.out.print(selectionException);
+					}catch (Exception updateException){
+						JOptionPane.showMessageDialog(updateButton, updateException);
+						System.out.print(updateException);
 					};
 				}
 			});
