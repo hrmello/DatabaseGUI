@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.List;
 import java.sql.Connection;
@@ -199,6 +200,7 @@ public class SelectWindow extends JFrame {
 				            System.out.println("\n----------------------------\n");
 				         }
 					}catch (Exception selectionException){
+						JOptionPane.showMessageDialog(selectButton, selectionException);
 						System.out.print(selectionException);
 					};
 				}

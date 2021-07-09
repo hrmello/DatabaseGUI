@@ -34,7 +34,7 @@ public class DatabaseInteraction {
 //					Scanner queryScan = new Scanner(System.in);
 //					System.out.println("Digite a consulta em SQL:");
 //					String query = queryScan.nextLine();
-					String query = "bla";
+//					String query = "bla";
 					if (option == 1) {
 						System.out.println("Qual tabela deseja visualizar? ");
 						System.out.println("1 - CURSOS, 2 - ESTUDANTES, 3 - DISCIPLINAS, 4 - NOTAS, 5 - TURMAS");
@@ -89,7 +89,7 @@ public class DatabaseInteraction {
 						
 						String cols = columns_list.toString();
 						
-						query = "INSERT INTO \"Institucional\".\"" + tabela + "\"("+ cols.substring(1, cols.length() - 1) + ") VALUES (" + valuesCols + ")"; 
+						String query = "INSERT INTO \"Institucional\".\"" + tabela + "\"("+ cols.substring(1, cols.length() - 1) + ") VALUES (" + valuesCols + ")"; 
 						System.out.println(query);
 						stm.execute(query);
 						System.out.println("Inserção feita no banco de dados");
@@ -122,14 +122,19 @@ public class DatabaseInteraction {
 						Scanner updateScan = new Scanner(System.in);
 						String updateValue = updateScan.next();
 						
-						System.out.println("Digite a condição na forma nome_da_coluna = valor");
+						System.out.println("Digite a coluna cujo valor quer utilizar para a condição de atualização");
 						System.out.println("Colunas disponíveis: ");
 						System.out.println(columns_list);
 						
-						Scanner conditionScan = new Scanner(System.in);
-						String condition = conditionScan.nextLine();
+						Scanner conditionColScan = new Scanner(System.in);
+						String conditionCol = conditionColScan.nextLine();
 						
-						String updateQuery = "UPDATE \"Institucional\".\""+ tabela + "\" SET "+ colToUpdate + "=" + updateValue +" WHERE " + condition;
+						System.out.println("Digite o valor da condição da coluna escolhida:");
+						Scanner conditionValueScan = new Scanner(System.in);
+						String conditionValue = conditionValueScan.nextLine();
+						
+						
+						String updateQuery = "UPDATE \"Institucional\".\""+ tabela + "\" SET "+ colToUpdate + "=" + updateValue +" WHERE " + conditionCol + "=" + conditionValue;
 						
 						stm.execute(updateQuery);
 						System.out.println("Atualização feita no banco de dados");
@@ -152,20 +157,23 @@ public class DatabaseInteraction {
 							columns_list.add(col);
 						}
 						
-						System.out.println("Digite a condição para a remoção na forma nome_da_coluna = valor");
+						System.out.println("Digite a coluna cujo valor quer utilizar para a condição de remoção");
 						System.out.println("Colunas disponíveis: ");
 						System.out.println(columns_list);
 						
-						Scanner conditionScan = new Scanner(System.in);
-						String condition = conditionScan.nextLine();
+						Scanner conditionColScan = new Scanner(System.in);
+						String conditionCol = conditionColScan.nextLine();
 						
-						String removeQuery = "DELETE FROM \"Institucional\".\""+ tabela +"\" WHERE " + condition;
+						System.out.println("Digite o valor da condição da coluna escolhida:");
+						Scanner conditionValueScan = new Scanner(System.in);
+						String conditionValue = conditionValueScan.nextLine();
+						
+						String removeQuery = "DELETE FROM \"Institucional\".\""+ tabela +"\" WHERE " + conditionCol + "=" + conditionValue;
 						
 						stm.execute(removeQuery);
 						System.out.println("Remoção feita no banco de dados");
 						 
 					} else {
-						stm.execute(query);
 						System.out.println("Por favor, digita uma opção válida.");
 					};
 				}
